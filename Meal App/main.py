@@ -6,6 +6,9 @@ from kivy.properties import StringProperty
 import webbrowser
 from kivymd.uix.snackbar import Snackbar
 from kivy.uix.label import Label
+from kivy.network.urlrequest import UrlRequest
+import certifi
+
 
 
 class HomeScreen(Screen):
@@ -24,10 +27,15 @@ class MainApp(MDApp):
         super().__init__(**kwargs)
 
     def on_start(self):
-        ingredient_list = self.root.ids['home'].ids['ingredient_list']
         url = 'https://www.themealdb.com/api/json/v1/1/random.php'
-        recipe = requests.get(url=url).json()
-        print(recipe)
+        UrlRequest(url, on_success=self.success, on_failure=self.failure, on_error=self.error, ca_file=certifi.where())
+
+
+
+    def success(self, UrlRequest, recipe):
+        ingredient_list = self.root.ids['home'].ids['ingredient_list']
+
+
         self.name = recipe['meals'][0]['strMeal']
         self.category = recipe['meals'][0]['strCategory']
         self.area = recipe['meals'][0]['strArea']
@@ -39,12 +47,21 @@ class MainApp(MDApp):
                 ingredient_list.add_widget(l)
 
 
+
+    def error(self, urlrequest):
+        print("error")
+        Snackbar(text='Url is not available').show()
+    def failure(self, urlrequest):
+        print("failure")
+        Snackbar(text='Url is not available').show()
+
     def view(self):
         if self.url != '':
-            webbrowser.open(self.url)
+            Snackbar(
+                text=self.url,
+                size_hint_x=2
+            ).show()
         else:
             Snackbar(text='Url is not available').show()
-
-
 
 MainApp().run()
