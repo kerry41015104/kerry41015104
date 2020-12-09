@@ -3,7 +3,6 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import Screen
 import requests
 from kivy.properties import StringProperty
-import webbrowser
 from kivymd.uix.snackbar import Snackbar
 from kivy.uix.label import Label
 from kivy.network.urlrequest import UrlRequest
