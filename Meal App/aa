@@ -1,8 +1,0 @@
-    def view(self, urlrequest, result):
-        if self.url != '':
-            Snackbar(
-                text=self.url,
-                size_hint_x=2
-            ).show()
-        else:
-            Snackbar(text='Url is not available').show()
